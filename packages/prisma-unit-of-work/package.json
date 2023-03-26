@@ -1,5 +1,18 @@
 {
   "name": "@doonpy/prisma-unit-of-work",
-  "version": "1.0.0",
-  "type": "commonjs"
+  "version": "0.0.0",
+  "type": "commonjs",
+  "description": "Package support Unit of Work for Prisma ORM",
+  "author": "Poon Nguyen <nguyenduypoon@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/doonpy/nestjs-packages",
+    "directory": "packages/prisma-unit-of-work"
+  },
+  "keywords": [
+    "unit of work",
+    "prisma",
+    "database",
+    "uow"
+  ]
 }

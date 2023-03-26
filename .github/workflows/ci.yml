@@ -1,0 +1,32 @@
+name: CI
+on:
+  push:
+    branches:
+      - '[0-9]+.[0-9]+.[0-9]+'
+  pull_request:
+    branches:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  main:
+    name: 🧪 Check
+    uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.11.3
+    with:
+      main-branch-name: 'main'
+      install-commands: 'npm ci'
+      number-of-agents: 3
+      parallel-commands-on-agents: |
+        npx nx affected --target=lint --parallel=3 --exclude=api --max-warnings=0
+        npx nx affected --target=test --parallel=3 --ci --code-coverage
+        npx nx affected --target=build --parallel=3
+    secrets:
+      NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+
+  agents:
+    name: ☁️ Nx Cloud - Agents
+    uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.11.3
+    with:
+      number-of-agents: 3
+    secrets:
+      NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+
