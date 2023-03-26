@@ -2,7 +2,9 @@
   "name": "nestjs-packages",
   "version": "1.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "postinstall": "prisma generate"
+  },
   "private": true,
   "dependencies": {
     "@nestjs/common": "^9.0.0",
