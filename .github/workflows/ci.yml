@@ -13,7 +13,6 @@ jobs:
     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.11.3
     with:
       main-branch-name: 'main'
-      install-commands: 'npm ci'
       number-of-agents: 3
       parallel-commands-on-agents: |
         npx nx affected --target=lint --parallel=3 --exclude=api --max-warnings=0
@@ -30,3 +29,20 @@ jobs:
     secrets:
       NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
+  publish:
+    name: 📦 Publish packages
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+    needs: [main]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://npm.pkg.github.com'
+      - run: npx nx affected --target=publish --tag ${{ github.run_number }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
