@@ -21,6 +21,7 @@
         "simple-import-sort/imports": "error",
         "simple-import-sort/exports": "error",
         "no-console": "error",
+        "@typescript-eslint/consistent-type-imports": "error",
         "@nrwl/nx/enforce-module-boundaries": [
           "error",
           {
