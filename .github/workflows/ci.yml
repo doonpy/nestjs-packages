@@ -52,13 +52,8 @@ jobs:
           node-version: '16.x'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: 📦 Use the node_modules cache if available
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
 
       - name: Publish package on NPM 📦
         run: npx nx affected --target=publish --tag ${{ github.run_number }}
