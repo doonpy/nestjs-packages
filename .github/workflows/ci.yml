@@ -6,19 +6,25 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+'
   pull_request:
     branches:
+      - main
       - '[0-9]+.[0-9]+.[0-9]+'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   main:
     name: 🧪 Check
     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.11.3
     with:
+      node-version: 16.x
       main-branch-name: 'main'
       number-of-agents: 3
       parallel-commands-on-agents: |
         npx nx affected --target=lint --parallel=3 --exclude=api --max-warnings=0
         npx nx affected --target=test --parallel=3 --ci --code-coverage
-        npx nx affected --target=build --parallel=3
+        npx nx affected --target=build
     secrets:
       NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
@@ -27,23 +33,34 @@ jobs:
     uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.11.3
     with:
       number-of-agents: 3
+      node-version: 16.x
     secrets:
       NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
   publish:
-    name: 📦 Publish packages
+    name: 📦 Publish to NPM
     if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
     needs: [main]
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: ⬇️ Checkout
+        uses: actions/checkout@v3
+
+      - name: 🟢 Setup NodeJS
+        uses: volta-cli/action@v3
         with:
           node-version: '16.x'
-          registry-url: 'https://npm.pkg.github.com'
-      - run: npx nx affected --target=publish --tag ${{ github.run_number }}
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: 📦 Use the node_modules cache if available
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-
+
+      - name: Publish package on NPM 📦
+        run: npx nx affected --target=publish --tag ${{ github.run_number }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
