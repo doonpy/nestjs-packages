@@ -2,6 +2,11 @@
   "name": "nestjs-packages",
   "version": "1.0.0",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/doonpy/nestjs-packages",
+    "directory": "packages/prisma-unit-of-work"
+  },
   "scripts": {
     "postinstall": "prisma generate && prisma migrate deploy"
   },
@@ -26,6 +31,7 @@
     "@nrwl/webpack": "15.9.0-beta.11",
     "@nrwl/workspace": "15.9.0-beta.11",
     "@prisma/client": "^4.12.0",
+    "@semantic-release/exec": "^6.0.3",
     "@types/jest": "29.4.4",
     "@types/node": "~18.7.1",
     "@types/supertest": "^2.0.12",
@@ -44,6 +50,7 @@
     "prisma": "^4.11.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
+    "semantic-release": "^21.0.1",
     "supertest": "^6.3.3",
     "ts-jest": "29.0.5",
     "ts-node": "10.9.1",

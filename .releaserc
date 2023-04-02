@@ -1,0 +1,19 @@
+{
+  "branches": [
+    { "name": "main" },
+    { "name": "next", "channel": "alpha", "prerelease": "alpha" }
+  ],
+  "tagFormat": "v${version}",
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "./tools/scripts/publish.sh ${nextRelease.version} ${nextRelease.gitTag}"
+      }
+    ],
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/npm",
+    "@semantic-release/github"
+  ]
+}

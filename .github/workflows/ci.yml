@@ -3,11 +3,11 @@ on:
   push:
     branches:
       - main
-      - '[0-9]+.[0-9]+.[0-9]+'
+      - next
   pull_request:
     branches:
       - main
-      - '[0-9]+.[0-9]+.[0-9]+'
+      - next
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
@@ -18,7 +18,7 @@ jobs:
     name: 🧪 Check
     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.11.3
     with:
-      node-version: 16.x
+      node-version: 18.x
       main-branch-name: 'main'
       number-of-agents: 3
       parallel-commands-on-agents: |
@@ -33,7 +33,7 @@ jobs:
     uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.11.3
     with:
       number-of-agents: 3
-      node-version: 16.x
+      node-version: 18.x
     secrets:
       NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
@@ -49,14 +49,15 @@ jobs:
       - name: 🟢 Setup NodeJS
         uses: volta-cli/action@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
 
-      - name: Publish package on NPM 📦
-        run: npx nx run-many --all --target=publish --tag=latest
+      - name: 📦 Semantic release
+        run: npx semantic-release
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}

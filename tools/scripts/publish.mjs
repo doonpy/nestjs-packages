@@ -33,7 +33,6 @@ if (version !== 'undefined') {
 }
 
 const graph = devkit.readCachedProjectGraph();
-console.log({graph})
 const project = graph.nodes[name];
 
 invariant(
