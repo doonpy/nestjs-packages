@@ -18,7 +18,7 @@ jobs:
     name: 🧪 Check
     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.11.3
     with:
-      node-version: 16.x
+      node-version: 18.x
       main-branch-name: 'main'
       number-of-agents: 3
       parallel-commands-on-agents: |
@@ -33,30 +33,33 @@ jobs:
     uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.11.3
     with:
       number-of-agents: 3
-      node-version: 16.x
+      node-version: 18.x
     secrets:
       NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
-  publish:
-    name: 📦 Publish to NPM
+  release:
+    name: 📦 Release
     if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
     needs: [main]
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: 🟢 Setup NodeJS
         uses: volta-cli/action@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
 
-      - name: Publish package on NPM 📦
-        run: npx nx run-many --all --target=publish --tag=latest
+      - name: 📦 Execute semantic release
+        run: npx semantic-release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}

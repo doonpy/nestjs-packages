@@ -51,9 +51,8 @@ process.chdir(outputPath);
 
 // Updating the version in "package.json" before publishing
 try {
-  const rootPackageJson = JSON.parse(readFileSync('../../../package.json').toString());
   const json = JSON.parse(readFileSync(`package.json`).toString());
-  json.version = version || rootPackageJson.version;
+  json.version = version
   writeFileSync(`package.json`, JSON.stringify(json, null, 2));
   execSync(`npm publish --access public --tag ${tag}`);
 } catch (e) {
