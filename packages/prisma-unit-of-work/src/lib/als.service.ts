@@ -1,22 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { AsyncLocalStorage } from 'async_hooks';
 
-const als = new AsyncLocalStorage<{ client?: any }>();
+import type { AlsStore } from './typing';
+
+const als = new AsyncLocalStorage<AlsStore>();
 
 @Injectable()
 export class AlsService {
-  private readonly _als: AsyncLocalStorage<{ client?: any }> = als;
+  private readonly _als: AsyncLocalStorage<AlsStore> = als;
 
-  public run<T = any>(callback: () => T) {
+  public run<T = unknown>(callback: () => T) {
     return this._als.run({}, callback);
   }
 
-  public setClient<Client>(client: Client): void {
+  public setClient<Client extends Omit<AlsStore, '$transaction'>>(
+    client: Client
+  ): void {
     const store = this._als.getStore();
     if (!store) {
-      throw new Error(
-        'No CLS context available, please make sure that a ClsMiddleware/Guard/Interceptor has set up the context, or wrap any calls that depend on CLS with "ClsService#run"'
-      );
+      throw new Error('No CLS context available');
     }
 
     store.client = client;
@@ -25,9 +27,7 @@ export class AlsService {
   public getClient<Client>(): Client {
     const store = this._als.getStore();
     if (!store) {
-      throw new Error(
-        'No CLS context available, please make sure that a ClsMiddleware/Guard/Interceptor has set up the context, or wrap any calls that depend on CLS with "ClsService#run"'
-      );
+      throw new Error('No CLS context available');
     }
 
     return store.client as Client;

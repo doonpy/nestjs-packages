@@ -16,7 +16,11 @@ export interface PrismaClientPrototype {
     options?: {
       maxWait?: number;
       timeout?: number;
-      isolationLevel?: any;
+      isolationLevel?: unknown;
     }
   ): Promise<R>;
+}
+
+export interface AlsStore {
+  client?: unknown;
 }

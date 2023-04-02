@@ -6,7 +6,7 @@ import type {
 
 import { AlsMiddleware } from './als.middleware';
 import { AlsService } from './als.service';
-import { ALS_SERVICE, PRISMA_CLIENT } from './constants';
+import { ALS_SERVICE, PRISMA_SERVICE } from './constants';
 import type { PrismaUnitOfWorkModuleOptions } from './typing';
 
 export class PrismaUnitOfWorkModule implements NestModule {
@@ -16,9 +16,9 @@ export class PrismaUnitOfWorkModule implements NestModule {
       global: options.global,
       providers: [
         { provide: ALS_SERVICE, useValue: new AlsService() },
-        { provide: PRISMA_CLIENT, useClass: options.prismaClient },
+        { provide: PRISMA_SERVICE, useClass: options.prismaClient },
       ],
-      exports: [PRISMA_CLIENT, ALS_SERVICE],
+      exports: [PRISMA_SERVICE, ALS_SERVICE],
     };
   }
 
