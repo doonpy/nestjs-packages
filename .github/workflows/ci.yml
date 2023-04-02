@@ -56,7 +56,7 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Publish package on NPM 📦
-        run: npx nx run-many --all --target=publish
+        run: npx nx run-many --all --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
