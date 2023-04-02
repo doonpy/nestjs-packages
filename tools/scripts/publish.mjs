@@ -8,8 +8,8 @@
  */
 
 import devkit from '@nrwl/devkit';
-import { execSync } from 'child_process';
-import { readFileSync, writeFileSync } from 'fs';
+import {execSync} from 'child_process';
+import {readFileSync, writeFileSync} from 'fs';
 import chalk from 'chalk';
 
 function invariant(condition, message) {
@@ -21,14 +21,16 @@ function invariant(condition, message) {
 
 // Executing publish script: node path/to/publish.mjs {name} --version {version} --tag {tag}
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
-const [, , name, version = require('package.json').version, tag = 'next'] = process.argv;
+const [, , name, version, tag = 'next'] = process.argv;
 
 // A simple SemVer validation to validate the version
-const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/;
-invariant(
-  version && validVersion.test(version),
-  `No version provided or version did not match Semantic Versioning, expected: #.#.#-tag.# or #.#.#, got ${version}.`
-);
+if(version !== 'undefined') {
+  const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/;
+  invariant(
+    validVersion.test(version),
+    `No version provided or version did not match Semantic Versioning, expected: #.#.#-tag.# or #.#.#, got ${version}.`
+  );
+}
 
 const graph = devkit.readCachedProjectGraph();
 const project = graph.nodes[name];
