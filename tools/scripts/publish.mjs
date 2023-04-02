@@ -24,7 +24,7 @@ function invariant(condition, message) {
 const [, , name, version, tag = 'next'] = process.argv;
 
 // A simple SemVer validation to validate the version
-if(version !== 'undefined') {
+if (version !== 'undefined') {
   const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/;
   invariant(
     validVersion.test(version),
@@ -33,6 +33,7 @@ if(version !== 'undefined') {
 }
 
 const graph = devkit.readCachedProjectGraph();
+console.log({graph})
 const project = graph.nodes[name];
 
 invariant(
@@ -50,14 +51,13 @@ process.chdir(outputPath);
 
 // Updating the version in "package.json" before publishing
 try {
+  const rootPackageJson = JSON.parse(readFileSync('../../../package.json').toString());
   const json = JSON.parse(readFileSync(`package.json`).toString());
-  json.version = version;
+  json.version = version || rootPackageJson.version;
   writeFileSync(`package.json`, JSON.stringify(json, null, 2));
+  execSync(`npm publish --access public --tag ${tag}`);
 } catch (e) {
   console.error(
     chalk.bold.red(`Error reading package.json file from library build output.`)
   );
 }
-
-// Execute "npm publish" to publish
-execSync(`npm publish --access public --tag ${tag}`);
