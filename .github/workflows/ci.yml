@@ -22,7 +22,7 @@ jobs:
       main-branch-name: 'main'
       number-of-agents: 3
       parallel-commands-on-agents: |
-        npx nx affected --target=lint --parallel=3 --exclude=api --max-warnings=0
+        npx nx affected --target=lint --parallel=3 --max-warnings=0
         npx nx affected --target=test --parallel=3 --ci --code-coverage
         npx nx affected --target=build
     secrets:
@@ -60,3 +60,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}

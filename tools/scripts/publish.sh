@@ -1,9 +1,16 @@
 #!/bin/bash -e
 
 VERSION=$1
+BRANCH=$2
 
 if [[ -n "$VERSION" ]]; then
-  npx nx run-many --all --target=publish --version=$VERSION --tag=$VERSION
+  if [[ "$BRANCH" == "main" ]]; then
+    TAG='latest'
+  else
+    TAG='next'
+  fi
+
+  npx nx affected --target=publish --parallel=3 --ver=$VERSION --tag=$TAG
   if [ $? -ne 0 ]; then
     exit 1
   fi
