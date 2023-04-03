@@ -18,7 +18,7 @@ export class AlsService {
   ): void {
     const store = this._als.getStore();
     if (!store) {
-      throw new Error('No CLS context available');
+      throw new Error('No ALS context available.');
     }
 
     store.client = client;
@@ -27,7 +27,7 @@ export class AlsService {
   public getClient<Client>(): Client {
     const store = this._als.getStore();
     if (!store) {
-      throw new Error('No CLS context available');
+      throw new Error('No ALS context available');
     }
 
     return store.client as Client;

@@ -9,7 +9,7 @@
     [
       "@semantic-release/exec",
       {
-        "publishCmd": "./tools/scripts/publish.sh ${nextRelease.version} ${nextRelease.gitTag}"
+        "publishCmd": "./tools/scripts/publish.sh ${nextRelease.version}"
       }
     ],
     "@semantic-release/release-notes-generator",
