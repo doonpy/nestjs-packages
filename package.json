@@ -4,8 +4,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/doonpy/nestjs-packages",
-    "directory": "packages/prisma-unit-of-work"
+    "url": "https://github.com/doonpy/nestjs-packages"
   },
   "scripts": {
     "postinstall": "prisma generate && prisma migrate deploy"

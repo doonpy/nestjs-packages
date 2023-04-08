@@ -15,9 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nestjs-packages/prisma-unit-of-work": [
-        "packages/prisma-unit-of-work/src/index.ts"
-      ]
+      "@nestjs-packages/prisma-uow": ["packages/prisma-uow/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

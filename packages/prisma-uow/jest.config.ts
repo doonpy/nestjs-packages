@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'prisma-unit-of-work',
+  displayName: 'prisma-uow',
   preset: '../../jest.preset.js',
   globals: {},
   testEnvironment: 'node',
@@ -13,5 +13,5 @@ export default {
     ],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/packages/prisma-unit-of-work',
+  coverageDirectory: '../../coverage/packages/prisma-uow',
 };
