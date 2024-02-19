@@ -22,9 +22,9 @@ jobs:
       main-branch-name: 'main'
       number-of-agents: 3
       parallel-commands-on-agents: |
-        npx nx affected --target=lint --parallel=3 --max-warnings=0
-        npx nx affected --target=test --parallel=3 --ci --code-coverage
-        npx nx affected --target=build
+        pnpm exec nx affected --target=lint --parallel=3 --max-warnings=0
+        pnpm exec nx affected --target=test --parallel=3 --ci --code-coverage
+        pnpm exec nx affected --target=build
     secrets:
       NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 

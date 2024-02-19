@@ -41,3 +41,5 @@ Thumbs.db
 
 # DB
 prisma/*.db
+
+.nx/cache
