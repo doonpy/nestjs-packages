@@ -1,0 +1,21 @@
+{
+  "name": "@doonpy/prisma-extension-multi-tenant",
+  "version": "0.0.0",
+  "type": "commonjs",
+  "description": "Prisma extension for multi-tenant",
+  "author": "Poon Nguyen <nguyenduypoon@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/doonpy/nestjs-packages",
+    "directory": "packages/prisma-extension-multi-tenant"
+  },
+  "peerDependencies": {
+    "@prisma/client": "^5.9.1",
+    "tslib": "^2.3.0"
+  },
+  "keywords": [
+    "multi-tenant",
+    "prisma",
+    "prisma extension",
+    "database"
+  ]}

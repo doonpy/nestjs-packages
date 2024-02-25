@@ -1,0 +1,50 @@
+{
+  "name": "prisma-extension-multi-tenant",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/prisma-extension-multi-tenant/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "dependsOn": ["prisma-prepare"],
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/prisma-extension-multi-tenant",
+        "tsConfig": "packages/prisma-extension-multi-tenant/tsconfig.lib.json",
+        "packageJson": "packages/prisma-extension-multi-tenant/package.json",
+        "main": "packages/prisma-extension-multi-tenant/src/index.ts",
+        "assets": ["packages/prisma-extension-multi-tenant/*.md"]
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs prisma-extension-multi-tenant {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "dependsOn": ["prisma-prepare"],
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "dependsOn": ["prisma-prepare"],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "packages/prisma-extension-multi-tenant/jest.config.ts"
+      }
+    },
+    "prisma-prepare": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "pnpm prisma generate",
+          "sed 's/<tenant>/tenant1/g' prisma/schema.prisma > prisma/cloned-schema.prisma && pnpm prisma migrate dev --schema prisma/cloned-schema.prisma",
+          "sed 's/<tenant>/tenant2/g' prisma/schema.prisma > prisma/cloned-schema.prisma && pnpm prisma migrate dev --schema prisma/cloned-schema.prisma",
+          "rm -f prisma/cloned-schema.prisma*"
+        ],
+        "parallel": false,
+        "cwd": "packages/prisma-extension-multi-tenant"
+      }
+    }
+  },
+  "tags": []
+}

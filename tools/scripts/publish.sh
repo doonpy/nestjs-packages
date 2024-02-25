@@ -10,7 +10,7 @@ if [[ -n "$VERSION" ]]; then
     TAG='next'
   fi
 
-  npx nx affected --target=publish --parallel=3 --ver=$VERSION --tag=$TAG
+  pnpm exec nx run-many --target=publish --parallel=3 --ver=$VERSION --tag=$TAG
   if [ $? -ne 0 ]; then
     exit 1
   fi
