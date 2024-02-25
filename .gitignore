@@ -39,7 +39,7 @@ testem.log
 Thumbs.db
 **/*/.env
 
-# DB
-prisma/*.db
-
+# Prisma
+packages/**/prisma/client
+packages/**/prisma/data
 .nx/cache

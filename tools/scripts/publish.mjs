@@ -7,14 +7,12 @@
  * You might need to authenticate with NPM before running this script.
  */
 
-import devkit from "@nrwl/devkit";
+import devkit from "@nx/devkit";
 import { execSync } from "child_process";
 import { readFileSync, writeFileSync } from "fs";
-import chalk from "chalk";
 
 function invariant(condition, message) {
   if (!condition) {
-    console.error(chalk.bold.red(message));
     process.exit(1);
   }
 }
@@ -55,7 +53,5 @@ try {
   writeFileSync(`package.json`, JSON.stringify(json, null, 2));
   execSync(`npm publish --access public --tag ${tag}`);
 } catch (e) {
-  console.error(
-    chalk.bold.red(`Error reading package.json file from library build output.`)
-  );
+  console.error('Error reading package.json file from library build output.');
 }

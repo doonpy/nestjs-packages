@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@doonpy/prisma-extension-multi-tenant": [
+        "packages/prisma-extension-multi-tenant/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
